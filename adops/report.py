@@ -15,12 +15,10 @@ class Report(object):
             file_info = match.groupdict()
             file_info['filename'] = self.filename
 
-            report_start_date = datetime.strptime(file_info['report_start_date'], '%Y%m%d')
-            file_info['report_start_date'] = report_start_date.strftime('%Y-%m-%d')
+            file_info['report_start_date'] = datetime.strptime(file_info['report_start_date'], '%Y%m%d')
 
 
-            report_end_date = datetime.strptime(file_info['report_end_date'], '%Y%m%d')
-            file_info['report_end_date'] = report_end_date.strftime('%Y-%m-%d')
+            file_info['report_end_date'] = datetime.strptime(file_info['report_end_date'], '%Y%m%d')
             return file_info
         else:
             print "Unexpected file type or name: " + self.filename

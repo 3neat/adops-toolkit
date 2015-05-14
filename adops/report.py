@@ -38,6 +38,7 @@ class Report(object):
 
 
 def report_filter(reports, type, advertiser_id=None, date_range=None):
+    # TODO: Refactor filter using generators or decorator based on that one book
 
     # Filter reports by: Type
     rpt = []
@@ -45,7 +46,6 @@ def report_filter(reports, type, advertiser_id=None, date_range=None):
 
     # Filter reports by: Advertiser
     filtered_list = []
-
     if advertiser_id:
         # Make sure that advertiser_id is a list
         if isinstance(advertiser_id, basestring):
@@ -57,8 +57,15 @@ def report_filter(reports, type, advertiser_id=None, date_range=None):
     else:
         filtered_list = rpt
 
+    # Filter reports by: Date Range
+    last_filtered_list = []
+    if date_range:
+        for r in filtered_list:
+            now = datetime.now()
+            delta = now - r.end_date
 
-
-
-
-    return filtered_list
+            if int(delta.days) <= date_range:
+                # TODO: This should eventually become the basis of logging
+                # print r.filename + " " + str(delta.days)
+                last_filtered_list.append(r)
+    return last_filtered_list

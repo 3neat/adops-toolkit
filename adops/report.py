@@ -35,3 +35,30 @@ class Report(object):
         self.report_length = tmp['report_length']
         self.advertiser = tmp['advertiser']
         self.advertiser_id = tmp['advertiser_id']
+
+
+def report_filter(reports, type, advertiser_id=None, date_range=None):
+
+    # Filter reports by: Type
+    rpt = []
+    [rpt.append(f) for f in reports if f.report_type == type]
+
+    # Filter reports by: Advertiser
+    filtered_list = []
+
+    if advertiser_id:
+        # Make sure that advertiser_id is a list
+        if isinstance(advertiser_id, basestring):
+            advertiser_id = list([advertiser_id])
+
+        for r in rpt:
+            if r.advertiser_id in advertiser_id:
+                filtered_list.append(r)
+    else:
+        filtered_list = rpt
+
+
+
+
+
+    return filtered_list

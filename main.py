@@ -12,4 +12,4 @@ def init_reports(folder):
 
 current_directory = os.getcwd()
 folder = os.path.join(current_directory, 'reports/')
-print init_reports(folder)
+reports = init_reports(folder)

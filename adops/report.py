@@ -38,7 +38,7 @@ class Report(object):
 
 
 def report_filter(reports, type, advertiser_id=None, date_range=None):
-    # TODO: Refactor filter using generators or decorator based on that one book
+    # TODO: 2 - Refactor filter using generators or decorator based on that one book
 
     # Filter reports by: Type
     rpt = []

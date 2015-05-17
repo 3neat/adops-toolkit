@@ -29,25 +29,36 @@ def init_reports(folder):
     return rpt
 
 
+
+
+
 # Set testing variables
 current_directory = os.getcwd()
 folder = os.path.join(current_directory, 'reports/')
 reports = init_reports(folder)
-type = 'Site'
-advertiser_id= ['xbci0tw', 'nk6bz6j']
+report_type = 'Site'
+advertiser = ['xbci0tw', 'nk6bz6j']
+
+
 date_range = 80
 
-
 # Filter out the needed report files for analysis
-filtered_reports = report.report_filter(reports,type,advertiser_id,date_range)
-
+filtered_reports = report.report_filter(reports,report_type,advertiser,date_range)
 
 # Transform report files to working DataFrame
 df = util.combine_reports(filtered_reports, SITE_COLUMNS, folder)
 df.columns = SITE_NAME
 
+df = df.groupby('site')
+df = df[[x for x in SITE_NAME]].aggregate(np.sum)
 
+df = util.add_metrics(df)
 
-#TODO: 1 - Refactor this to __main__
+# NOTES:
+# * All of the above functions will produce an advertiser / filtered Site Report data frame
+# that has performance metrics calculated and is ready for analysis. It still needs the ability to:
+# TODO: 0 - Create these data frames based on saved "rule/group" structure
+# TODO: 0 - After a rule structure, need to think of UI
+# TODO: 1 - Refactor below to __main__
 for x in filtered_reports:
     print x.filepath

@@ -14,10 +14,7 @@ class Report(object):
         if match:
             file_info = match.groupdict()
             file_info['filename'] = self.filename
-
             file_info['report_start_date'] = datetime.strptime(file_info['report_start_date'], '%Y%m%d')
-
-
             file_info['report_end_date'] = datetime.strptime(file_info['report_end_date'], '%Y%m%d')
             return file_info
         else:

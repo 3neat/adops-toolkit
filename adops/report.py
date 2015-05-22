@@ -34,35 +34,34 @@ class Report(object):
         self.advertiser_id = tmp['advertiser_id']
 
 
-def report_filter(reports, type, advertiser_id=None, date_range=None):
+def report_filter(reports, **view):
     # TODO: 2 - Refactor filter using generators or decorator based on that one book
+    # TODO: 1 - Implement unit testing for this function
 
     # Filter reports by: Type
     rpt = []
-    [rpt.append(f) for f in reports if f.report_type == type]
+    [rpt.append(f) for f in reports if f.report_type == view['report_type']]
 
     # Filter reports by: Advertiser
     filtered_list = []
-    if advertiser_id:
-        # Make sure that advertiser_id is a list
-        if isinstance(advertiser_id, basestring):
-            advertiser_id = list([advertiser_id])
-
+    if view['advertiser'] is not None:
         for r in rpt:
-            if r.advertiser_id in advertiser_id:
+            if r.advertiser_id in view['advertiser']:
                 filtered_list.append(r)
-    else:
-        filtered_list = rpt
+
+        rpt = filtered_list
 
     # Filter reports by: Date Range
-    last_filtered_list = []
-    if date_range:
-        for r in filtered_list:
+    filtered_list = []
+    if view['date_range'] is not None:
+        for r in rpt:
             now = datetime.now()
             delta = now - r.end_date
 
-            if int(delta.days) <= date_range:
-                # TODO: This should eventually become the basis of logging
+            if int(delta.days) <= view['date_range']:
+                # TODO: 3 - This should eventually become the basis of logging
                 # print r.filename + " " + str(delta.days)
-                last_filtered_list.append(r)
-    return last_filtered_list
+                filtered_list.append(r)
+
+        rpt = filtered_list
+    return rpt

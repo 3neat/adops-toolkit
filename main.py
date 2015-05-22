@@ -30,20 +30,21 @@ def init_reports(folder):
 
 
 
-
-
-# Set testing variables
 current_directory = os.getcwd()
 folder = os.path.join(current_directory, 'reports/')
 reports = init_reports(folder)
-report_type = 'Site'
-advertiser = ['xbci0tw', 'nk6bz6j']
 
-
-date_range = 80
+# Set testing variables
+view = {
+	'report_type': 'Site',
+	'advertiser': ['xbci0tw', 'nk6bz6j'],
+	'campaign': [],
+	'adgroup': [],
+    'date_range': None
+}
 
 # Filter out the needed report files for analysis
-filtered_reports = report.report_filter(reports,report_type,advertiser,date_range)
+filtered_reports = report.report_filter(reports, **view)
 
 # Transform report files to working DataFrame
 df = util.combine_reports(filtered_reports, SITE_COLUMNS, folder)
@@ -60,5 +61,5 @@ df = util.add_metrics(df)
 # TODO: 0 - Create these data frames based on saved "rule/group" structure
 # TODO: 0 - After a rule structure, need to think of UI
 # TODO: 1 - Refactor below to __main__
-for x in filtered_reports:
-    print x.filepath
+for i,x in enumerate(filtered_reports):
+    print str(i) + ": " + x.filepath

@@ -45,10 +45,7 @@ def report_filter(reports, **view):
     # Filter reports by: Advertiser
     filtered_list = []
     if view['advertiser'] is not None:
-        for r in rpt:
-            if r.advertiser_id in view['advertiser']:
-                filtered_list.append(r)
-
+        [filtered_list.append(f) for f in rpt if f.advertiser_id in view['advertiser']]
         rpt = filtered_list
 
     # Filter reports by: Date Range

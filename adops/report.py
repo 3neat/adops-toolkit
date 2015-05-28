@@ -39,19 +39,16 @@ def report_filter(reports, **view):
     # TODO: 1 - Implement unit testing for this function
 
     # Filter reports by: Type
-    rpt = []
-    [rpt.append(f) for f in reports if f.report_type == view['report_type']]
+    reports = [r for r in reports if r.report_type == view['report_type']]
 
     # Filter reports by: Advertiser
-    filtered_list = []
     if view['advertiser'] is not None:
-        [filtered_list.append(f) for f in rpt if f.advertiser_id in view['advertiser']]
-        rpt = filtered_list
+        reports = [r for r in reports if r.advertiser_id in view['advertiser']]
 
     # Filter reports by: Date Range
     filtered_list = []
     if view['date_range'] is not None:
-        for r in rpt:
+        for r in reports:
             now = datetime.now()
             delta = now - r.end_date
 
@@ -60,5 +57,5 @@ def report_filter(reports, **view):
                 # print r.filename + " " + str(delta.days)
                 filtered_list.append(r)
 
-        rpt = filtered_list
-    return rpt
+        reports = filtered_list
+    return reports

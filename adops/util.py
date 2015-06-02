@@ -56,6 +56,7 @@ def create_report(folder, reports, view):
     df = combine_reports(filtered_reports, SITE_COLUMNS, folder)
     df.columns = SITE_NAME
 
+    # TODO: 0 - Add ability to filter data by Campaign and AdGroups
     df = df.groupby('site')
     df = df[[x for x in SITE_NAME]].aggregate(np.sum)
 

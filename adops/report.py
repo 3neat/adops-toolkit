@@ -54,7 +54,7 @@ def report_filter(reports, **view):
 
             if int(delta.days) <= view['date_range']:
                 # TODO: 3 - This should eventually become the basis of logging
-                # print r.filename + " " + str(delta.days)
+                #print r.filename + " " + str(delta.days)
                 filtered_list.append(r)
 
         reports = filtered_list

@@ -1,4 +1,4 @@
-import os
+import os, json
 from adops import report, util
 
 
@@ -14,17 +14,15 @@ current_directory = os.getcwd()
 folder = os.path.join(current_directory, 'reports/')
 reports = init_reports(folder)
 
-# Set testing variables
-view = {
-	'report_type': 'Site',
-	'advertiser': ['xbci0tw', 'nk6bz6j'],
-	'campaign': [],
-	'adgroup': [],
-    'date_range': None,
-    'name': 'ChannelLock-FranNet_SiteAnalysis'
-}
+# Iterate through multiple Views within views.json
+# TODO: 1 - Refactor to Views to SQL
 
-util.create_report(folder, reports, view)
+with open('views.json') as d:
+    data = json.load(d)
+
+for x in data:
+    print("Working on: {0}").format(x['name'])
+    util.create_report(folder, reports, x)
 
 # NOTES:
 # * All of the above functions will produce an advertiser / filtered Site Report data frame

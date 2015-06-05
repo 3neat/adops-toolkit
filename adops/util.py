@@ -48,7 +48,7 @@ def add_metrics(df):
     return df
 
 
-def create_report(folder, reports, view):
+def create_report(folder, reports, view, group_by='site'):
     # Filter out the needed report files for analysis
     filtered_reports = report.report_filter(reports, **view)
 
@@ -57,7 +57,7 @@ def create_report(folder, reports, view):
     df.columns = SITE_NAME
 
     # TODO: 0 - Add ability to filter data by Campaign and AdGroups
-    df = df.groupby('site')
+    df = df.groupby(group_by)
     df = df[[x for x in SITE_NAME]].aggregate(np.sum)
 
     df = add_metrics(df)

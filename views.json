@@ -1,8 +1,8 @@
 [
     {
-        "name": "",
+        "name": "Output Filename",
         "report_type": "Site",
-        "advertiser": [""],
+        "advertiser": null,
         "campaign": null,
         "adgroup": null,
         "date_range": null

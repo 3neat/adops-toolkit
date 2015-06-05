@@ -10,19 +10,28 @@ def init_reports(folder):
             rpt.append(report.Report(f))
     return rpt
 
-current_directory = os.getcwd()
-folder = os.path.join(current_directory, 'reports/')
-reports = init_reports(folder)
 
-# Iterate through multiple Views within views.json
-# TODO: 1 - Refactor to Views to SQL
+def main():
+    current_directory = os.getcwd()
+    folder = os.path.join(current_directory, 'reports/')
+    reports = init_reports(folder)
 
-with open('views.json') as d:
-    data = json.load(d)
+    # Iterate through multiple Views within views.json
+    # TODO: 1 - Refactor to Views to SQL
 
-for x in data:
-    print("Working on: {0}").format(x['name'])
-    util.create_report(folder, reports, x)
+    with open('views.json') as d:
+        data = json.load(d)
+
+    for x in data:
+        print("Working on: {0}").format(x['name'])
+        try:
+            util.create_report(folder, reports, x)
+        except ValueError:
+            print "ERROR: Improperly formatted views.json"
+
+
+if __name__ == '__main__':
+    main()
 
 # NOTES:
 # * All of the above functions will produce an advertiser / filtered Site Report data frame

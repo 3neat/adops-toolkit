@@ -35,7 +35,6 @@ class Report(object):
 
 
 def report_filter(reports, **view):
-    # TODO: 2 - Refactor filter using generators or decorator based on that one book
     # TODO: 1 - Implement unit testing for this function
 
     # Filter reports by: Type

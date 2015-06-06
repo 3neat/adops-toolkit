@@ -48,6 +48,14 @@ def add_metrics(df):
     return df
 
 
+def rules_filter(df, rules):
+    t = pd.DataFrame()
+    for rule in rules:
+        t = pd.concat([t, df.query(rule)])
+    t.drop_duplicates(inplace=True)
+    return t
+
+
 def create_report(folder, reports, view, group_by='site'):
     # Filter out the needed report files for analysis
     filtered_reports = report.report_filter(reports, **view)
@@ -61,5 +69,8 @@ def create_report(folder, reports, view, group_by='site'):
     df = df[[x for x in SITE_NAME]].aggregate(np.sum)
 
     df = add_metrics(df)
+
+    if view['rules']:
+        df = rules_filter(df, view['rules'])
 
     df.to_csv(''.join([view['name'], '.csv']))

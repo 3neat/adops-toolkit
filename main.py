@@ -22,20 +22,13 @@ def main():
     with open('views.json') as d:
         data = json.load(d)
 
-    for x in data:
-        print("Working on: {0}").format(x['name'])
+    for view in data:
+        print("Working on: {0}").format(view['name'])
         try:
-            util.create_report(folder, reports, x)
+            util.create_report(folder, reports, view)
         except ValueError:
             print "ERROR: Improperly formatted views.json"
 
 
 if __name__ == '__main__':
     main()
-
-# NOTES:
-# * All of the above functions will produce an advertiser / filtered Site Report data frame
-# that has performance metrics calculated and is ready for analysis. It still needs the ability to:
-# TODO: 0 - Create these data frames based on saved "rule/group" structure
-# TODO: 0 - After a rule structure, need to think of UI
-# TODO: 1 - Refactor below to __main__

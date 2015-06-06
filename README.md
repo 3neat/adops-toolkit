@@ -18,7 +18,8 @@ A programmatic buy side toolkit for working with The Trade Desk HD Report files.
         "advertiser": null,           # Specified Advertiser, Campaign, Ad Group IDs to be processed: 
         "campaign": null,             # - use a JSON array if 1 or more ID
         "adgroup": null,              # - if processing all, set to null
-        "date_range": null            # Number of days back to process; ie. null, or 120
+        "date_range": null,           # Number of days back to process; ie. null, or 120
+        "rules": null                 # JSON array containing DataFrame query rules...
     }
 ```
 4. Open console and execute main.py: `python main.py`
@@ -27,10 +28,10 @@ A programmatic buy side toolkit for working with The Trade Desk HD Report files.
 
 ## TODO
 ------
-1. Add user specified rules filtering capability
-2. Assign Rules within Views
-3. Command line interface w/ arguments
-4. Cross-platform compatibility
+~~1. Add user specified rules filtering capability~~
+~~2. Assign Rules within Views~~
+3. Cross-platform compatibility
+4. Command line interface w/ arguments
 5. User specified reports folder location
 6. Compatibility with other report types
 7. User specified 'groupby' - Site, Device Type, Supply Vendor, etc

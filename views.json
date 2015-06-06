@@ -5,6 +5,7 @@
         "advertiser": null,
         "campaign": null,
         "adgroup": null,
-        "date_range": null
+        "date_range": null,
+        "rules": null
     }
 ]

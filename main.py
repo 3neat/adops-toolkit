@@ -7,7 +7,7 @@ def init_reports(folder):
     rpt = []
     for f in os.listdir(folder):
         if f.endswith(".tsv"):
-            rpt.append(report.Report(f))
+            rpt.append(report.Report(os.path.join(folder, f)))
     return rpt
 
 

@@ -3,7 +3,6 @@ from adops import report, util
 
 
 def init_reports(folder):
-    # TODO: 3 - May want to consider refactoring this to pass entire path; verify for cross OS compatibility
     rpt = []
     for f in os.listdir(folder):
         if f.endswith(".tsv"):

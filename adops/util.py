@@ -15,22 +15,41 @@ SITE_NAME = ['advertiser_id', 'campaign_id', 'adgroup_id', 'site', 'supply_vendo
                         'ctc_1', 'ctc_2', 'ctc_3', 'ctc_4', 'ctc_5', 'vtc_1','vtc_2', 'vtc_3', 'vtc_4', 'vtc_5',
                         'cost', 'creative_is_trackable', 'creative_was_viewable']
 
-SITE_NEW_NAME = ['advertiser_id', 'campaign_id', 'adgroup_id', 'site', 'supply_vendor', 'advertiser_name',
-                        'campaign_name', 'adgroup_name', 'bids', 'bid_amount', 'impressions', 'clicks',
-                        'ctc_1', 'ctc_2', 'ctc_3', 'ctc_4', 'ctc_5', 'vtc_1','vtc_2', 'vtc_3', 'vtc_4', 'vtc_5',
-                        'cost', 'creative_is_trackable', 'creative_was_viewable','ctr', 'win_rate', 'avg_bid', 'tc',
-                        'ecpc', 'ecpm', 'ecpa', 'moat']
 
-def combine_reports(files, columns, folder):
+def adgroup_filter(df, adgroups):
+    # isinstance() let's us take in either a string or a list
+    if isinstance(adgroups, basestring):
+        df = df[df['Ad Group Id'].isin([adgroups])]
+    else:
+        df = df[df['Ad Group Id'].isin(adgroups)]
+    return df
+
+
+def campaign_filter(df, campaign_id):
+    # isinstance() let's us take in either a string or a list
+    if isinstance(campaign_id, basestring):
+        print "found a string"
+        df = df[df['Campaign Id'].isin(list(campaign_id))]
+    else:
+        df = df[df['Campaign Id'].isin(campaign_id)]
+    return df
+
+
+def combine_reports(reports, folder, view, columns):
     # Return an aggregate DataFrame for a given set of files
-
     section = pd.DataFrame()
 
-    for rpt in files:
-        report_path = str(path.join(folder, rpt.filename))
-        df = pd.read_csv(report_path,
+    for rpt in reports:
+        df = pd.read_csv(rpt.filepath,
                          usecols=columns,
                          sep='\t')
+
+        if view["campaign"]:
+            df = campaign_filter(df, view["campaign"])
+
+        if view["adgroup"]:
+            df = adgroup_filter(df, view["adgroup"])
+
         section = pd.concat([section, df])
     return section
 
@@ -61,7 +80,9 @@ def create_report(folder, reports, view, group_by='site'):
     filtered_reports = report.report_filter(reports, **view)
 
     # Transform report files to working DataFrame
-    df = combine_reports(filtered_reports, SITE_COLUMNS, folder)
+    # TODO: 1.a - Refactor this out so that it uses report.filepath instead
+    # TODO: 0 - Check if View contains Campaign or Ad Group ids to filter out
+    df = combine_reports(filtered_reports, folder, view, SITE_COLUMNS)
     df.columns = SITE_NAME
 
     # TODO: 0 - Add ability to filter data by Campaign and AdGroups

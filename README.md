@@ -28,19 +28,23 @@ A programmatic buy side toolkit for working with The Trade Desk HD Report files.
 
 ## TODO
 ------
-~~1. Add user specified rules filtering capability~~
-~~2. Assign Rules within Views~~
-3. Cross-platform compatibility
-4. Command line interface w/ arguments
-5. User specified reports folder location
-6. Compatibility with other report types
-7. User specified 'groupby' - Site, Device Type, Supply Vendor, etc
-8. UI to build out Views
-9. Implement unit tests
-10. Import data from DB in addition to report files
-11. Implement logging
-12. Refactor into pip module
-13. User specified performance metric calculations
-14. User specified headers for working with reports from outside TTD
-15. User specified location of export files
-XX. API integration
+~~* Add user specified rules filtering capability~~
+~~* Assign Rules within Views~~
+~~* Cross-platform compatibility~~
+~~* Process by Campaign and Ad Group~~
+* Fix problem with "(blank)" site impressions being excluded
+* Compatibility with Conversion (and others) report types
+* User specified 'groupby' - Site, Device Type, Supply Vendor, etc
+* Create a requirements.txt
+* Refactor file export to XLS using ExcelWriter if not too slow
+* User specified reports folder location passed through CLI
+* Implement unit tests
+* Implement logging
+* UI to build out Views
+* Export data into DB
+* Import data from DB in addition to report files
+* Refactor into pip module
+* User specified performance metric calculations
+* User specified report types for processing reports outside TTD
+* User specified location of export files
+* TTD API integration

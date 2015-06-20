@@ -14,7 +14,8 @@ A programmatic buy side toolkit for working with The Trade Desk HD Report files.
 ```
     {
         "name": "samplefilename",     # Filename of the exported View
-        "report_type": "Site",        # Report Type to be processed; currently only Site
+        "report_type": "Site",        # Report Type to be processed
+        "group_by": null,             # Specify the dimension to group the output report
         "advertiser": null,           # Specified Advertiser, Campaign, Ad Group IDs to be processed: 
         "campaign": null,             # - use a JSON array if 1 or more ID
         "adgroup": null,              # - if processing all, set to null
@@ -32,9 +33,10 @@ A programmatic buy side toolkit for working with The Trade Desk HD Report files.
 ~~* Assign Rules within Views~~
 ~~* Cross-platform compatibility~~
 ~~* Process by Campaign and Ad Group~~
+~~* Compatibility with other report types~~
+~~* User specified 'groupby' - Site, Device Type, Supply Vendor, etc~~
 * Fix problem with "(blank)" site impressions being excluded
-* Compatibility with Conversion (and others) report types
-* User specified 'groupby' - Site, Device Type, Supply Vendor, etc
+* Compatibility with Conversion report
 * Create a requirements.txt
 * Refactor file export to XLS using ExcelWriter if not too slow
 * User specified reports folder location passed through CLI

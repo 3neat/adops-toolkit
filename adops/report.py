@@ -20,7 +20,6 @@ class Report(object):
         else:
             print "Unexpected file type or name: " + self.filename
 
-
     def __init__(self, filepath):
         self.filepath = filepath
         self.filename = path.basename(self.filepath)

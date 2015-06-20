@@ -24,10 +24,9 @@ def main():
     for view in data:
         print("Working on: {0}").format(view['name'])
         try:
-            util.create_report(folder, reports, view)
+            util.create_report(folder, reports, view, view["group_by"])
         except ValueError:
             print "ERROR: Improperly formatted views.json"
-
 
 if __name__ == '__main__':
     main()

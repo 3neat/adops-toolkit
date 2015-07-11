@@ -1,9 +1,11 @@
 from os import path
+from hashlib import sha1
 from datetime import datetime
 import re
 
 
 class Report(object):
+
     def _parse_filename(self, filename):
         # Parse the filename for all metadata
         regex = re.compile(r'.*Advertiser - (?P<advertiser>.*) - (?P<advertiser_id>\w{7}) - (RTB )?(?P<report_type>.*) - '
@@ -32,6 +34,11 @@ class Report(object):
         self.advertiser = tmp['advertiser']
         self.advertiser_id = tmp['advertiser_id']
 
+    def githash(self):
+        self.s = sha1()
+        self.data = open(self.filepath, 'r')
+        self.s.update("blob %u\0" % len(self.data.read()))
+        return self.s.hexdigest()
 
 def report_filter(reports, **view):
     # TODO: 1 - Implement unit testing for this function

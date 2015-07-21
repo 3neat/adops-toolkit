@@ -25,28 +25,3 @@ A programmatic buy side toolkit for working with The Trade Desk HD Report files.
 ```
 4. Open console and execute main.py: `python main.py`
 5. Processed files will be located in the `adops` folder
-
-
-## TODO
-------
-~~* Add user specified rules filtering capability~~
-~~* Assign Rules within Views~~
-~~* Cross-platform compatibility~~
-~~* Process by Campaign and Ad Group~~
-~~* Compatibility with other report types~~
-~~* User specified 'groupby' - Site, Device Type, Supply Vendor, etc~~
-* Fix problem with "(blank)" site impressions being excluded
-* Compatibility with Conversion report
-* Create a requirements.txt
-* Refactor file export to XLS using ExcelWriter if not too slow
-* User specified reports folder location passed through CLI
-* Implement unit tests
-* Implement logging
-* UI to build out Views
-* Export data into DB
-* Import data from DB in addition to report files
-* Refactor into pip module
-* User specified performance metric calculations
-* User specified report types for processing reports outside TTD
-* User specified location of export files
-* TTD API integration

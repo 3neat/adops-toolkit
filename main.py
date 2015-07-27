@@ -1,36 +1,5 @@
 import os, json
-from adops import report, util
-
-
-def init_reports(folder):
-    rpt = []
-    for f in os.listdir(folder):
-        if f.endswith(".tsv"):
-            report_type = get_report_type(f)
-
-            if report_type == 'Site':
-                rpt.append(report.SiteReport(os.path.join(folder, f)))
-            if report_type == 'Site List':
-                rpt.append(report.SiteListReport(os.path.join(folder, f)))
-            if report_type == 'Data Element Report':
-                rpt.append(report.DataElementReport(os.path.join(folder, f)))
-            if report_type == 'Time of Day':
-                rpt.append(report.TimeOfDayReport(os.path.join(folder, f)))
-            if report_type == 'Browser Report':
-                rpt.append(report.BrowserReport(os.path.join(folder, f)))
-            if report_type == 'Ad Group Recency':
-                rpt.append(report.AdGroupRecencyReport(os.path.join(folder, f)))
-            if report_type == 'Performance':
-                rpt.append(report.PerformanceReport(os.path.join(folder, f)))
-            if report_type == 'Geo Report':
-                rpt.append(report.GeoReport(os.path.join(folder, f)))
-            if report_type == 'Conversions':
-                pass
-    return rpt
-
-def get_report_type(filename):
-    file_info = report.parse_filename(filename)
-    return file_info['report_type']
+from adops import util
 
 
 def process_views(views, folder, reports):
@@ -52,5 +21,5 @@ if __name__ == '__main__':
     # Process Views
     current_directory = os.getcwd()
     folder = os.path.join(current_directory, 'reports/')
-    reports = init_reports(folder)
+    reports = util.init_reports(folder)
     process_views('views.json', folder, reports)

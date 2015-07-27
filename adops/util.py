@@ -1,7 +1,38 @@
 import pandas as pd
 import numpy as np
-from os import path
+from os import listdir, path
 from adops import report
+
+def init_reports(folder):
+    rpt = []
+    for f in listdir(folder):
+        if f.endswith(".tsv"):
+            report_type = get_report_type(f)
+
+            if report_type == 'Site':
+                rpt.append(report.SiteReport(path.join(folder, f)))
+            if report_type == 'Site List':
+                rpt.append(report.SiteListReport(path.join(folder, f)))
+            if report_type == 'Data Element Report':
+                rpt.append(report.DataElementReport(path.join(folder, f)))
+            if report_type == 'Time of Day':
+                rpt.append(report.TimeOfDayReport(path.join(folder, f)))
+            if report_type == 'Browser Report':
+                rpt.append(report.BrowserReport(path.join(folder, f)))
+            if report_type == 'Ad Group Recency':
+                rpt.append(report.AdGroupRecencyReport(path.join(folder, f)))
+            if report_type == 'Performance':
+                rpt.append(report.PerformanceReport(path.join(folder, f)))
+            if report_type == 'Geo Report':
+                rpt.append(report.GeoReport(path.join(folder, f)))
+            if report_type == 'Conversions':
+                pass
+    return rpt
+
+
+def get_report_type(filename):
+    file_info = report.parse_filename(filename)
+    return file_info['report_type']
 
 
 def adgroup_filter(df, adgroups):

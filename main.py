@@ -25,22 +25,18 @@ def init_reports(folder):
             if report_type == 'Geo Report':
                 rpt.append(report.GeoReport(os.path.join(folder, f)))
             if report_type == 'Conversions':
-                print "Ignoring Conversions Report"
+                pass
     return rpt
 
 def get_report_type(filename):
     file_info = report.parse_filename(filename)
     return file_info['report_type']
 
-def main():
-    current_directory = os.getcwd()
-    folder = os.path.join(current_directory, 'reports/')
-    reports = init_reports(folder)
 
+def process_views(views, folder, reports):
     # Iterate through multiple Views within views.json
     # TODO: 1 - Refactor to Views to SQL
-
-    with open('views.json') as d:
+    with open(views) as d:
         data = json.load(d)
 
     for view in data:
@@ -50,5 +46,11 @@ def main():
         except ValueError:
             print "ERROR: Improperly formatted views.json"
 
+
 if __name__ == '__main__':
-    main()
+
+    # Process Views
+    current_directory = os.getcwd()
+    folder = os.path.join(current_directory, 'reports/')
+    reports = init_reports(folder)
+    process_views('views.json', folder, reports)

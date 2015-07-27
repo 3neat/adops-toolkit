@@ -62,6 +62,7 @@ def rules_filter(df, rules):
 
 
 def create_report(folder, reports, view, group_by):
+
     # Filter out the needed report files for analysis
     filtered_reports = report.report_filter(reports, **view)
 
@@ -70,6 +71,7 @@ def create_report(folder, reports, view, group_by):
     df = combine_reports(filtered_reports, folder, view)
 
     df = df.groupby(group_by)
+    # Quick hack by taking the first report's renamed column attribute to sum up values
     columns = filtered_reports[0].rn_columns
     df = df[[x for x in columns]].aggregate(np.sum)
 

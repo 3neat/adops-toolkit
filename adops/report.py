@@ -115,14 +115,16 @@ class BrowserReport(Report):
     def __init__(self, filename):
         Report.__init__(self, filename)
 
-        self.og_columns = ['Date', 'UTC Hour', 'User Hour of Week', 'Advertiser Id', 'Campaign Id', 'Ad Group Id',
-                           'Advertiser Name', 'Campaign Name', 'Ad Group Name', 'Bids', 'Bid Amount', 'Imps', 'Clicks',
-                           'PC 1', 'PC 2', 'PC 3', 'PC 4', 'PC 5', 'PC 6', 'PI 1', 'PI 2', 'PI 3', 'PI 4', 'PI 5',
-                           'PI 6', 'Advertiser Total Cost', 'CreativeIsTrackable', 'CreativeWasViewable']
-        self.rn_columns = ['date', 'utc_hour', 'user_hour_of_week', 'advertiser_id', 'campaign_id', 'adgroup_id',
-                           'advertiser_name', 'campaign_name', 'adgroup_name', 'bids', 'bid_amount', 'impressions',
-                           'clicks', 'ctc_1', 'ctc_2', 'ctc_3', 'ctc_4', 'ctc_5', 'ctc_6', 'vtc_1', 'vtc_2', 'vtc_3',
-                           'vtc_4', 'vtc_5', 'vtc_6', 'cost', 'creative_is_trackable', 'creative_was_viewable']
+        self.og_columns = ['Advertiser Id', 'Campaign Id', 'Ad Group Id', 'Device Type', 'OS Family', 'OS', 'Browser',
+                           'Ad Format', 'Advertiser Name', 'Campaign Name', 'Ad Group Name', 'Bids', 'Bid Amount',
+                           'Imps', 'Clicks', 'PC 1', 'PC 2', 'PC 3', 'PC 4', 'PC 5', 'PC 6', 'PI 1', 'PI 2', 'PI 3',
+                           'PI 4', 'PI 5', 'PI 6', 'Advertiser Total Cost', 'CreativeIsTrackable',
+                           'CreativeWasViewable']
+        self.rn_columns = ['advertiser_id', 'campaign_id', 'adgroup_id', 'device_type', 'os_family', 'os', 'browser',
+                           'ad_format', 'advertiser_name', 'campaign_name', 'adgroup_name', 'bids', 'bid_amount',
+                           'impressions', 'clicks', 'ctc_1', 'ctc_2', 'ctc_3', 'ctc_4', 'ctc_5', 'ctc_6', 'vtc_1',
+                           'vtc_2', 'vtc_3', 'vtc_4', 'vtc_5', 'vtc_6', 'cost', 'creative_is_trackable',
+                           'creative_was_viewable']
 
 class AdGroupRecencyReport(Report):
 

@@ -54,7 +54,7 @@ def campaign_filter(df, campaign_id):
     return df
 
 
-def combine_reports(reports, folder, view):
+def combine_reports(reports, view=None):
     # Return an aggregate DataFrame for a given set of files
     section = pd.DataFrame()
 
@@ -99,7 +99,7 @@ def create_report(folder, reports, view, group_by):
 
     # Transform report files to working DataFrame
     # TODO: 1.a - Refactor this out so that it uses report.filepath instead
-    df = combine_reports(filtered_reports, folder, view)
+    df = combine_reports(filtered_reports, view)
 
     df = df.groupby(group_by)
     # Quick hack by taking the first report's renamed column attribute to sum up values

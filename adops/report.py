@@ -3,7 +3,6 @@ from hashlib import sha1
 from datetime import datetime
 import re
 import pandas as pd
-import numpy as np
 
 
 class Report(object):

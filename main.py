@@ -1,6 +1,6 @@
 import os, sys, json
 import datetime
-from adops import util
+from adops import util, downloader
 from config import settings
 
 
@@ -25,12 +25,19 @@ def process_views():
             print "ERROR: Improperly formatted views.json"
 
 def download_reports(date):
+    # Given a start date, download all 7 day report files, from all advertisers
+
+    # Make sure the provided date is in the correct format
     try:
         datetime.datetime.strptime(date, "%Y-%m-%d")
     except ValueError:
         raise ValueError("Incorrect date usage, should be YYYY-MM-DD")
 
     report_time = ''.join([date, ' 14:00:44.092598+00:00'])
+    token = settings["ttd"]["token"]
+    ttd = downloader.TTD(token)
+
+    print ttd.get_advertisers()
 
 
 

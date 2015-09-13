@@ -1,4 +1,5 @@
 import os, sys, json
+import datetime
 from adops import util
 from config import settings
 
@@ -23,12 +24,28 @@ def process_views():
         except ValueError:
             print "ERROR: Improperly formatted views.json"
 
+def download_reports(date):
+    try:
+        datetime.datetime.strptime(date, "%Y-%m-%d")
+    except ValueError:
+        raise ValueError("Incorrect date usage, should be YYYY-MM-DD")
+
+    report_time = ''.join([date, ' 14:00:44.092598+00:00'])
+
+
+
+
 if __name__ == '__main__':
+    # We'll stop using sys.argv once download() is implemented
     if len(sys.argv) > 1:
         command = sys.argv[1]
         if command == 'process':
             process_views()
+        if command == 'download' and sys.argv[2]:
+            # completely assumes that date is passed in as second argument in yyyy-mm-dd format
+            date = sys.argv[2]
+            download_reports(date)
         else:
-            print "Command not found: python main.py process "
+            print "Command not found: python main.py process|download (date)"
     else:
-        print "Not enough arguments: python main.py process"
+        print "Not enough arguments: python main.py process|download (date)"

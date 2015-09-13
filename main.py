@@ -1,9 +1,27 @@
-import os, sys, json
-import datetime
+import os, sys, json, re
+import datetime, urllib
 from adops import util, downloader
 from config import settings
 
 
+p = re.compile(".*7days/(.*)\?")
+
+def get_report_url(reports):
+    # Iterate through all Advertiser's reports JSON responses for a specific start date
+    urls = []
+    for report in reports["Result"]:
+        # Iterating through the Advertisers...
+
+        if report["Duration"] == "SevenDays" and report["Scope"] == "Advertiser":
+            # This limits to Seven Day reports, but can be passed in through as a variable
+            # in future refactoring... then download 1 day, 30 days, MTDs.
+
+            if report["Type"] != "ExcelPivotReports":
+                # Ignore ExcelPivot Reports
+                urls.append(report['DownloadUrl'])
+
+    # Add in check to see if Report Results = 8 OR 9 and to discard 0 or 1-7
+    return urls
 
 def process_views():
     try:
@@ -35,11 +53,26 @@ def download_reports(date):
 
     report_time = ''.join([date, ' 14:00:44.092598+00:00'])
     token = settings["ttd"]["token"]
-    ttd = downloader.TTD(token)
+    ttd = downloader.TTDConnection(token)
 
-    print ttd.get_advertisers()
+    all_reports = ttd.get_reports(report_time)
 
+    # Get Report URLs
+    urls = []
+    for advertiser in all_reports:
+        urls.append(get_report_url(json.loads(advertiser.text)))
 
+    # Download the reports
+    for url in urls:
+        for u in url:
+            try:
+                filename = p.match(u).groups()[0]
+                filename = urllib.unquote(filename).decode('utf8')
+                print "Downloading: %s" % filename
+                testfile = urllib.URLopener()
+                testfile.retrieve(u,filename)
+            except:
+                print "Error download: %s" % u
 
 
 if __name__ == '__main__':

@@ -1,13 +1,15 @@
 import requests
 import json
 
-class TTD(object):
+class TTDConnection(object):
     root = "https://api.thetradedesk.com/v3/"
 
-    def __init__(self, token, path=""):
+    def __init__(self, token):
         self.token = token
         self.auth = {'Content-Type': 'application/json', "TTD-Auth": self.token}
         self.all_advertisers = None
+        self.all_advertisers = self.get_advertisers()
+
 
     def get_advertisers(self):
         if not self.all_advertisers:
@@ -20,6 +22,19 @@ class TTD(object):
                 self.all_advertisers.append(advertiser["AdvertiserId"])
 
         return self.all_advertisers
+
+    def get_reports(self, time):
+        self.all_reports = []
+
+        for advertiser in self.all_advertisers:
+            payload = {"AdvertiserID": advertiser.encode('ascii','ignore'), "ReportDateUTC": time}
+            self.all_reports.append(requests.post("https://api.thetradedesk.com/v3/hdreports",
+                                                  headers=self.auth,
+                                                  json=payload))
+        return self.all_reports
+
+
+
 
 
 

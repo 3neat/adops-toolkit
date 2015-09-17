@@ -10,5 +10,3 @@ report_length: 7day
 report_folder: reports/
 
 views_file: views.json
-
-

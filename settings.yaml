@@ -1,0 +1,14 @@
+ttd:
+  login:
+  password:
+  token:
+  api: https://api.thetradedesk.com/v3/
+
+db_engine: "postgresql://user:password@localhost:5432/dev"
+
+report_length: 7day
+report_folder: reports/
+
+views_file: views.json
+
+

@@ -1,0 +1,13 @@
+ttd:
+  login: ***REMOVED***
+  password: ***REMOVED***
+  token: ***REMOVED***
+  api: https://api.thetradedesk.com/v3/
+
+
+report_length: 7day
+report_folder: reports/
+
+views_file: views.json
+
+

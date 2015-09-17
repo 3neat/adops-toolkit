@@ -1,6 +1,6 @@
 import os, sys, json, re
 import datetime, urllib
-from adops import util, downloader
+from adops import util, downloader, sync
 from config import settings
 
 
@@ -74,17 +74,61 @@ def download_reports(date):
             except:
                 print "Error download: %s" % u
 
+def sync_to_db(engine, reporttype, tablename):
+    report_folder = settings["report_folder"]
+    current_directory = os.getcwd()
+    folder = os.path.join(current_directory, report_folder)
+    reports = util.init_reports(folder)
+    filtered_reports = []
+
+    for rpt in reports:
+        if rpt.report_type == reporttype:
+            filtered_reports.append(rpt)
+
+    sync.importer(engine, filtered_reports, reporttype, tablename)
+
+
+def to_sql():
+    import_combos = zip(["Site",
+                     "Site List",
+                     "Data Element Report",
+                     "Time of Day",
+                     "Performance",
+                     "Geo Report",
+                     "Browser Report"],
+                    ["sites",
+                     "site_lists",
+                     "data_elements",
+                     "time_of_day",
+                     "performance",
+                     "geography",
+                     "browsers"])
+
+    engine = 'postgresql://username@localhost:5432/database'
+
+    for combo in import_combos:
+        reporttype, tablename = combo
+        print "Starting to import %s    -->     %s" % (reporttype, tablename)
+        sync_to_db(engine, reporttype, tablename)
+
 
 if __name__ == '__main__':
     # We'll stop using sys.argv once download() is implemented
     if len(sys.argv) > 1:
         command = sys.argv[1]
         if command == 'process':
+            # This will process rules against views.json
+            # python main.py process
             process_views()
         if command == 'download' and sys.argv[2]:
-            # completely assumes that date is passed in as second argument in yyyy-mm-dd format
+            # This will download all 7 day reports from a provided date 'yyyy-mm-dd' format
+            # python main.py download 2015-09-09
             date = sys.argv[2]
             download_reports(date)
+        if command == 'sync':
+            # This will sync new report files to the database
+            # python main.py sync
+            to_sql()
         else:
             print "Command not found: python main.py process|download (date)"
     else:

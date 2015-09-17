@@ -1,9 +1,9 @@
 [
     {
         "name": "Output Filename",
-        "report_type": null,
-        "group_by": null,
-        "advertiser": null,
+        "report_type": "Site",
+        "group_by": "site",
+        "advertiser": "pc6ljp8",
         "campaign": null,
         "adgroup": null,
         "date_range": null,

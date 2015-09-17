@@ -86,6 +86,7 @@ def sync_to_db(engine, reporttype, tablename):
             filtered_reports.append(rpt)
 
     sync.importer(engine, filtered_reports, reporttype, tablename)
+    print "importing to actual DB"
 
 
 def to_sql():
@@ -104,7 +105,7 @@ def to_sql():
                      "geography",
                      "browsers"])
 
-    engine = 'postgresql://username@localhost:5432/database'
+    engine = settings["db_engine"]
 
     for combo in import_combos:
         reporttype, tablename = combo

@@ -43,7 +43,7 @@ def importer(engine, reports, reporttype, tablename):
         filehash = report.githash()
 
         if session.query(exists().where(Processed.filehash == filehash)).scalar():
-            print "already processed %s" % (report.filename)
+            #print "already processed %s" % (report.filename)
             pass
         else:
             df = pd.DataFrame()
@@ -73,4 +73,4 @@ def importer(engine, reports, reporttype, tablename):
                                             report_end_date=report.end_date)
             session.add(process_transaction)
             session.commit()
-            print "Done importing %s into %s" % (reporttype, tablename)
+            #print "Done importing %s into %s" % (reporttype, tablename)

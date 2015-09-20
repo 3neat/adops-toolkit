@@ -38,19 +38,18 @@ def get_report_type(filename):
 def adgroup_filter(df, adgroups):
     # isinstance() let's us take in either a string or a list
     if isinstance(adgroups, basestring):
-        df = df[df['Ad Group Id'].isin([adgroups])]
+        df = df[df['ad_group_id'].isin([adgroups])]
     else:
-        df = df[df['Ad Group Id'].isin(adgroups)]
+        df = df[df['ad_group_id'].isin(adgroups)]
     return df
 
 
 def campaign_filter(df, campaign_id):
     # isinstance() let's us take in either a string or a list
     if isinstance(campaign_id, basestring):
-        print "found a string"
-        df = df[df['Campaign Id'].isin(list(campaign_id))]
+        df = df[df['campaign_id'].isin(list(campaign_id))]
     else:
-        df = df[df['Campaign Id'].isin(campaign_id)]
+        df = df[df['campaign_id'].isin(campaign_id)]
     return df
 
 

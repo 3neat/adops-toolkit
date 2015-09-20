@@ -23,6 +23,7 @@ def get_report_url(reports):
     # Add in check to see if Report Results = 8 OR 9 and to discard 0 or 1-7
     return urls
 
+
 def process_views():
     try:
         folder = os.path.join(os.getcwd(), settings['report_folder'])
@@ -41,6 +42,7 @@ def process_views():
             util.create_report(folder, reports, view, view["group_by"])
         except ValueError:
             print "ERROR: Improperly formatted views.json"
+
 
 def download_reports(date):
     # Given a start date, download all 7 day report files, from all advertisers
@@ -73,6 +75,7 @@ def download_reports(date):
                 testfile.retrieve(u,filename)
             except:
                 print "Error download: %s" % u
+
 
 def sync_to_db(engine, reporttype, tablename):
     report_folder = settings["report_folder"]
@@ -131,6 +134,6 @@ if __name__ == '__main__':
             # python main.py sync
             to_sql()
         else:
-            print "Command not found: python main.py process|download (date)"
+            print "Command not found: python main.py process | download (date) | sync"
     else:
-        print "Not enough arguments: python main.py process|download (date)"
+        print "Not enough arguments: python main.py process | download (date) | sync"

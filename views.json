@@ -3,7 +3,7 @@
         "name": "Output Filename",
         "report_type": "Site",
         "group_by": "site",
-        "advertiser": "pc6ljp8",
+        "advertiser": null,
         "campaign": null,
         "adgroup": null,
         "date_range": null,

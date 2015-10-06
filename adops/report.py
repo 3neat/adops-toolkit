@@ -3,6 +3,8 @@ from hashlib import sha1
 from datetime import datetime
 import re
 import pandas as pd
+from sqlalchemy.dialects import postgresql
+
 
 
 class Report(object):
@@ -172,6 +174,115 @@ class GeoReport(Report):
                            'advertiser_name', 'campaign_name', 'adgroup_name', 'bids', 'bid_amount', 'impressions',
                            'clicks', 'ctc_1', 'ctc_2', 'ctc_3', 'ctc_4', 'ctc_5', 'ctc_6', 'vtc_1', 'vtc_2', 'vtc_3',
                            'vtc_4', 'vtc_5', 'vtc_6', 'cost', 'creative_is_trackable', 'creative_was_viewable']
+
+class ConversionReport(Report):
+
+    def __init__(self, filename):
+        Report.__init__(self, filename)
+
+        self.og_columns = ['Conversion Time', 'TDID', 'Conversion Id', 'Order Id', '# Impressions', '# Display Clicks',
+                           '# Ad Groups w/ Activity', 'Conversion Type', 'Tracking Tag Name', 'Referrer Url',
+                           'Path to Conversion', 'Monetary Value', 'First Impression Time',
+                           'First Impression Campaign Id', 'First Impression Campaign Name',
+                           'First Impression Ad Group Id', 'First Impression Ad Group Name',
+                           'First Impression Creative Id', 'First Impression Creative Name',
+                           'First Impression Format', 'Last Impression Time', 'Last Impression Campaign Id',
+                           'Last Impression Campaign Name', 'Last Impression Ad Group Id',
+                           'Last Impression Ad Group Name', 'Last Impression Creative Id',
+                           'Last Impression Creative Name', 'Last Impression Format',
+                           'Last Impression Frequency', 'Last Impression FCap', 'Last Impression Site',
+                           'Last Impression Categories', 'Last Impression Country', 'Last Impression Region',
+                           'Last Impression Metro', 'First Display Click Time', 'First Display Click Campaign Id',
+                           'First Display Click Campaign Name', 'First Display Click Ad Group Id',
+                           'First Display Click Ad Group Name', 'First Display Click Creative Id',
+                           'First Display Click Creative Name', 'First Display Click Format', 'Last Display Click Time',
+                           'Last Display Click Campaign Id', 'Last Display Click Campaign Name',
+                           'Last Display Click Ad Group Id', 'Last Display Click Ad Group Name',
+                           'Last Display Click Creative Id', 'Last Display Click Creative Name',
+                           'Last Display Click Format', 'Advertiser Id',
+                           'TD 1', 'TD 2', 'TD 3', 'TD 4', 'TD 5', 'TD 6', 'TD 7', 'TD 8', 'TD 9', 'TD 10']
+
+        self.rn_columns = ['conversion_time', 'tdid', 'conversion_id', 'order_id', 'num_of_impressions',
+                           'num_of_display_clicks', 'num_of_adgroups_w_activity', 'conversion_type',
+                           'tracking_tag_name', 'referrer_url', 'path_to_conversion', 'monetary_value',
+                           'first_imp_time', 'first_imp_campaign_id', 'first_imp_campaign_name', 'first_imp_adgroup_id',
+                           'first_imp_adgroup_name', 'first_imp_creative_id', 'first_imp_creative_name',
+                           'first_imp_format', 'last_imp_time', 'last_imp_campaign_id', 'last_imp_campaign_name',
+                           'last_imp_adgroup_id', 'last_imp_adgroup_name', 'last_imp_creative_id',
+                           'last_imp_creative_name', 'last_imp_format', 'last_imp_frequency', 'last_imp_fcap',
+                           'last_imp_site', 'last_imp_categories', 'last_imp_country', 'last_imp_region',
+                           'last_imp_metro', 'first_click_time', 'first_click_campaign_id', 'first_click_campaign_name',
+                           'first_click_adgroup_id', 'first_click_adgroup_name', 'first_click_creative_id',
+                           'first_click_creative_name', 'first_click_format', 'last_click_time',
+                           'last_click_campaign_id', 'last_click_campaign_name', 'last_click_adgroup_id',
+                           'last_click_adgroup_name', 'last_click_creative_id', 'last_click_creative_name',
+                           'last_click_format', 'advertiser_id',
+                           'td_1', 'td_2', 'td_3', 'td_4', 'td_5', 'td_6', 'td_7', 'td_8', 'td_9', 'td_10']
+
+        self.dtype = { 'index': postgresql.BIGINT,
+                       'conversion_time': postgresql.TEXT,
+                       'tdid': postgresql.TEXT,
+                       'conversion_id': postgresql.TEXT,
+                       'order_id': postgresql.TEXT,
+                       'num_of_impressions': postgresql.BIGINT,
+                       'num_of_display_clicks': postgresql.BIGINT,
+                       'num_of_adgroups_w_activity': postgresql.BIGINT,
+                       'conversion_type': postgresql.TEXT,
+                       'tracking_tag_name': postgresql.TEXT,
+                       'referrer_url': postgresql.TEXT,
+                       'path_to_conversion': postgresql.TEXT,
+                       'monetary_value': postgresql.DOUBLE_PRECISION,
+                       'first_imp_time': postgresql.TEXT,
+                       'first_imp_campaign_id': postgresql.TEXT,
+                       'first_imp_campaign_name': postgresql.TEXT,
+                       'first_imp_adgroup_id': postgresql.TEXT,
+                       'first_imp_adgroup_name': postgresql.TEXT,
+                       'first_imp_creative_id': postgresql.TEXT,
+                       'first_imp_creative_name': postgresql.TEXT,
+                       'first_imp_format': postgresql.TEXT,
+                       'last_imp_time': postgresql.TEXT,
+                       'last_imp_campaign_id': postgresql.TEXT,
+                       'last_imp_campaign_name': postgresql.TEXT,
+                       'last_imp_adgroup_id': postgresql.TEXT,
+                       'last_imp_adgroup_name': postgresql.TEXT,
+                       'last_imp_creative_id': postgresql.TEXT,
+                       'last_imp_creative_name': postgresql.TEXT,
+                       'last_imp_format': postgresql.TEXT,
+                       'last_imp_frequency': postgresql.BIGINT,
+                       'last_imp_fcap': postgresql.TEXT,
+                       'last_imp_site': postgresql.TEXT,
+                       'last_imp_categories': postgresql.TEXT,
+                       'last_imp_country': postgresql.TEXT,
+                       'last_imp_region': postgresql.TEXT,
+                       'last_imp_metro': postgresql.TEXT,
+                       'first_click_time': postgresql.TEXT,
+                       'first_click_campaign_id': postgresql.TEXT,
+                       'first_click_campaign_name': postgresql.TEXT,
+                       'first_click_adgroup_id': postgresql.TEXT,
+                       'first_click_adgroup_name': postgresql.TEXT,
+                       'first_click_creative_id': postgresql.TEXT,
+                       'first_click_creative_name': postgresql.TEXT,
+                       'first_click_format': postgresql.TEXT,
+                       'last_click_time': postgresql.TEXT,
+                       'last_click_campaign_id': postgresql.TEXT,
+                       'last_click_campaign_name': postgresql.TEXT,
+                       'last_click_adgroup_id': postgresql.TEXT,
+                       'last_click_adgroup_name': postgresql.TEXT,
+                       'last_click_creative_id': postgresql.TEXT,
+                       'last_click_creative_name': postgresql.TEXT,
+                       'last_click_format': postgresql.TEXT,
+                       'advertiser_id': postgresql.TEXT,
+                       'td_1': postgresql.BIGINT,
+                       'td_2': postgresql.BIGINT,
+                       'td_3': postgresql.BIGINT,
+                       'td_4': postgresql.BIGINT,
+                       'td_5': postgresql.BIGINT,
+                       'td_6': postgresql.BIGINT,
+                       'td_7': postgresql.BIGINT,
+                       'td_8': postgresql.BIGINT,
+                       'td_9': postgresql.BIGINT,
+                       'td_10': postgresql.BIGINT,
+                    }
 
 def parse_filename(filename):
     # Parse the filename for all metadata

@@ -64,8 +64,12 @@ def importer(engine, reports, reporttype, tablename):
             date_processed = datetime.datetime.now()
             print "Inserting %s rows for file: %s" % (rows, report.filename)
 
-            #CHANGE VARIABLE
-            df.to_sql(tablename, engine, if_exists='append')
+            # TODO: Will need to implement 'index=False' to stop including column in SQL
+            # TODO: Need to implement dtype for all report types, using quick hack to get conversions up
+            if report.report_type == 'Conversions':
+                df.to_sql(tablename, engine, if_exists='append', dtype=report.dtype)
+            else:
+                df.to_sql(tablename, engine, if_exists='append')
 
             process_transaction = Processed(filehash=filehash, filename=report.filename, row_count=rows,
                                             date_processed=date_processed, report_type=report.report_type,

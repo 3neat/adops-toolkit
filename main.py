@@ -99,14 +99,16 @@ def to_sql():
                      "Time of Day",
                      "Performance",
                      "Geo Report",
-                     "Browser Report"],
+                     "Browser Report",
+                     "Conversions"],
                     ["sites",
                      "site_lists",
                      "data_elements",
                      "time_of_day",
                      "performance",
                      "geography",
-                     "browsers"])
+                     "browsers",
+                     "conversions"])
 
     engine = settings["db_engine"]
 

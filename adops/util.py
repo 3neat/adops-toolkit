@@ -26,7 +26,7 @@ def init_reports(folder):
             if report_type == 'Geo Report':
                 rpt.append(report.GeoReport(path.join(folder, f)))
             if report_type == 'Conversions':
-                pass
+                rpt.append(report.ConversionReport(path.join(folder, f)))
     return rpt
 
 

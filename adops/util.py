@@ -80,6 +80,11 @@ def add_metrics(df):
     df['ecpm'] = df.cost / df.impressions * 1000
     df['ecpa'] = df.cost / df.tc
     df['moat'] = df.creative_was_viewable / df.creative_is_trackable
+
+    # TEMP: Delete raw numbers
+    df.drop('bid_amount', axis=1, inplace=True)
+    df.drop('creative_is_trackable', axis=1, inplace=True)
+    df.drop('creative_was_viewable', axis=1, inplace=True)
     return df
 
 
@@ -91,8 +96,35 @@ def rules_filter(df, rules):
     return t
 
 
-def create_report(folder, reports, view, group_by):
+def format_excel(df, filename, sheetname="1"):
+    # TODO: Place a file extension check to ensure one .xlsx
 
+    # TODO: Sort DataFrame by 'cost' DESC
+    df.sort('cost')
+    writer = pd.ExcelWriter(filename, engine='xlsxwriter')
+    df.to_excel(writer, sheet_name=sheetname)
+
+    workbook = writer.book
+    worksheet = writer.sheets[sheetname]
+
+    currency = workbook.add_format({'num_format': '$#,###.##'})
+    percentage = workbook.add_format({'num_format': '0.00%'})
+
+    worksheet.set_column('A:A', 55)
+    worksheet.set_column('Q:Q', None, currency)
+    worksheet.set_column('T:T', None, currency)
+    worksheet.set_column('V:V', None, currency)
+    worksheet.set_column('W:W', None, currency)
+    worksheet.set_column('X:X', None, currency)
+
+    worksheet.set_column('R:R', None, percentage)
+    worksheet.set_column('S:S', None, percentage)
+    worksheet.set_column('Y:Y', None, percentage)
+
+    writer.save()
+
+
+def create_report(folder, reports, view, group_by):
     # Filter out the needed report files for analysis
     filtered_reports = report.report_filter(reports, **view)
 
@@ -110,6 +142,9 @@ def create_report(folder, reports, view, group_by):
     if view['rules']:
         df = rules_filter(df, view['rules'])
 
-    df.to_csv(''.join([view['name'], '.csv']))
+    # Save to CSV:
+    # df.to_csv(''.join([view['name'], '.csv']))
 
+    # Save to formatted XLSX:
+    format_excel(df, view['name'])
 

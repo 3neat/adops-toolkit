@@ -300,7 +300,6 @@ def parse_filename(filename):
     else:
         print "Unexpected file type or name: " + filename
 
-
 def report_filter(reports, **view):
     # TODO: 1 - Implement unit testing for this function
 

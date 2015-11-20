@@ -47,9 +47,10 @@ def adgroup_filter(df, adgroups):
 def campaign_filter(df, campaign_id):
     # isinstance() let's us take in either a string or a list
     if isinstance(campaign_id, basestring):
-        df = df[df['campaign_id'].isin(list(campaign_id))]
+        df = df[df['campaign_id'].isin([campaign_id])]
     else:
         df = df[df['campaign_id'].isin(campaign_id)]
+
     return df
 
 
@@ -63,10 +64,12 @@ def combine_reports(reports, view=None):
         if view["campaign"]:
             df = campaign_filter(df, view["campaign"])
 
+
         if view["adgroup"]:
             df = adgroup_filter(df, view["adgroup"])
 
         section = pd.concat([section, df])
+
     return section
 
 
@@ -97,10 +100,13 @@ def rules_filter(df, rules):
 
 
 def format_excel(df, filename, sheetname="1"):
+    # ERROR IS IN HERE WHEN TO XLSX IS RUNNING
     # TODO: Place a file extension check to ensure one .xlsx
 
     # TODO: Sort DataFrame by 'cost' DESC
     df.sort('cost')
+
+    filename = ''.join([filename, ".xlsx"])
     writer = pd.ExcelWriter(filename, engine='xlsxwriter')
     df.to_excel(writer, sheet_name=sheetname)
 
@@ -132,18 +138,20 @@ def create_report(folder, reports, view, group_by):
     # TODO: 1.a - Refactor this out so that it uses report.filepath instead
     df = combine_reports(filtered_reports, view)
 
-    df = df.groupby(group_by)
+    df = df.groupby(view["group_by"])
+
     # Quick hack by taking the first report's renamed column attribute to sum up values
     columns = filtered_reports[0].rn_columns
     df = df[[x for x in columns]].aggregate(np.sum)
 
     df = add_metrics(df)
 
+
     if view['rules']:
         df = rules_filter(df, view['rules'])
 
     # Save to CSV:
-    # df.to_csv(''.join([view['name'], '.csv']))
+    #df.to_csv(''.join([view['name'], '.csv']))
 
     # Save to formatted XLSX:
     format_excel(df, view['name'])

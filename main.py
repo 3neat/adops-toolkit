@@ -119,8 +119,11 @@ def to_sql():
 
 
 if __name__ == '__main__':
+    if len(sys.argv) == 1:
+        process_views()
+
     # We'll stop using sys.argv once download() is implemented
-    if len(sys.argv) > 1:
+    elif len(sys.argv) > 1:
         command = sys.argv[1]
         if command == 'process':
             # This will process rules against views.json
@@ -138,4 +141,4 @@ if __name__ == '__main__':
         else:
             print "Command not found: python main.py process | download (date) | sync"
     else:
-        print "Not enough arguments: python main.py process | download (date) | sync"
+        print "This shouldn't be firing..."

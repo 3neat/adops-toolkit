@@ -284,21 +284,41 @@ class ConversionReport(Report):
                        'td_10': postgresql.BIGINT,
                     }
 
+
 def parse_filename(filename):
     # Parse the filename for all metadata
-    regex = re.compile(r'.*Advertiser - (?P<advertiser>.*) - (?P<advertiser_id>\w{7}) - (RTB )?(?P<report_type>.*)'
+    if "1 Day" in filename:
+        regex = re.compile(r'.*Advertiser - (?P<advertiser>.*) - (?P<advertiser_id>\w{7}) - (RTB )?(?P<report_type>.*)'
+                       r' - (?P<report_length>1 Day) - USD - (?P<report_start_date>\d{8})\.tsv$')
+
+    elif "7 Days" in filename:
+        regex = re.compile(r'.*Advertiser - (?P<advertiser>.*) - (?P<advertiser_id>\w{7}) - (RTB )?(?P<report_type>.*)'
+                       r' - (?P<report_length>\d{1,2} Days) - USD - (?P<report_start_date>\d{8})-'
+                       r'(?P<report_end_date>\d{8})\.tsv$')
+
+    elif "30 Days" in filename:
+        regex = re.compile(r'.*Advertiser - (?P<advertiser>.*) - (?P<advertiser_id>\w{7}) - (RTB )?(?P<report_type>.*)'
                        r' - (?P<report_length>\d{1,2} Days) - USD - (?P<report_start_date>\d{8})-'
                        r'(?P<report_end_date>\d{8})\.tsv$')
 
     match = regex.match(filename)
+
     if match:
         file_info = match.groupdict()
         file_info['filename'] = filename
+
+        # 1 Day reports don't have an end date, so this just sets it to the start date
+        try:
+            file_info['report_end_date'] = datetime.strptime(file_info['report_end_date'], '%Y%m%d')
+        except KeyError:
+            file_info['report_end_date'] = datetime.strptime(file_info['report_start_date'], '%Y%m%d')
+
         file_info['report_start_date'] = datetime.strptime(file_info['report_start_date'], '%Y%m%d')
-        file_info['report_end_date'] = datetime.strptime(file_info['report_end_date'], '%Y%m%d')
+
         return file_info
     else:
         print "Unexpected file type or name: " + filename
+
 
 def report_filter(reports, **view):
     # TODO: 1 - Implement unit testing for this function

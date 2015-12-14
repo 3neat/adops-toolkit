@@ -48,7 +48,7 @@ def importer(engine, reports, reporttype, tablename):
         else:
             df = pd.DataFrame()
             df = report.to_df(rename_cols=True)
-
+            print "  Working on: %s" % report.filename
             # Append Report Start Date:
             ser = append_column(df,report.start_date)
             start_series = pd.to_datetime(pd.Series(ser, name="report_start_date"))
@@ -62,19 +62,19 @@ def importer(engine, reports, reporttype, tablename):
 
             rows = len(df.index)
             date_processed = datetime.datetime.now()
-            #print "Inserting %s rows for file: %s" % (rows, report.filename)
+            print "  Inserting %s rows for file: %s" % (rows, report.filename)
 
             # TODO: Need to implement dtype for all report types, using quick hack to get conversions up
             if report.report_type == 'Conversions':
                 try:
                     df.to_sql(tablename, engine, if_exists='append', dtype=report.dtype, index=False)
                 except:
-                    print "*** Error importing to SQL: %s" % report.filename
+                    print "* ERROR importing: %s" % report.filename
             else:
                 try:
                     df.to_sql(tablename, engine, if_exists='append', index=False)
                 except:
-                    print "*** Error importing to SQL: %s" % report.filename
+                    print "* ERROR importing: %s" % report.filename
 
             process_transaction = Processed(filehash=filehash, filename=report.filename, row_count=rows,
                                             date_processed=date_processed, report_type=report.report_type,

@@ -20,7 +20,7 @@ def get_report_url(reports):
                 # Ignore ExcelPivot Reports
                 urls.append(report['DownloadUrl'])
 
-    # Add in check to see if Report Results = 8 OR 9 and to discard 0 or 1-7
+    # TODO: Add in check to see if Report Results = 8 OR 9 and to discard 0 or 1-7
     return urls
 
 
@@ -89,7 +89,7 @@ def sync_to_db(engine, reporttype, tablename):
             filtered_reports.append(rpt)
 
     sync.importer(engine, filtered_reports, reporttype, tablename)
-    print "importing to actual DB"
+    print "** importing to DB"
 
 
 def to_sql():
@@ -114,7 +114,7 @@ def to_sql():
 
     for combo in import_combos:
         reporttype, tablename = combo
-        print "Starting to import %s    -->     %s" % (reporttype, tablename)
+        print "* Starting to import %s    -->     %s" % (reporttype, tablename)
         sync_to_db(engine, reporttype, tablename)
 
 

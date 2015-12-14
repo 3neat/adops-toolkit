@@ -33,7 +33,7 @@ class Report(object):
     def githash(self):
         self.s = sha1()
         self.data = open(self.filepath, 'r')
-        self.s.update(self.filename % len(self.data.read()))
+        self.s.update(''.join([self.filename, str(len(self.data.read()))]))
         return self.s.hexdigest()
 
     def to_df(self, rename_cols=False):

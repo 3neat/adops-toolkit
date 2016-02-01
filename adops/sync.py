@@ -46,24 +46,22 @@ def importer(engine, reports, reporttype, tablename):
             #print "already processed %s" % (report.filename)
             pass
         else:
-            df = pd.DataFrame()
             df = report.to_df(rename_cols=True)
             #print "Working on: %s" % report.filename
 
             # Append Report Start Date:
             ser = append_column(df,report.start_date)
             start_series = pd.to_datetime(pd.Series(ser, name="report_start_date"))
-            tmp_df = pd.concat([df, start_series], axis=1)
+            df = pd.concat([df, start_series], axis=1)
 
             # Append Report End Date:
             ser = append_column(df,report.end_date)
             end_series = pd.to_datetime(pd.Series(ser, name="report_end_date"))
-            df = pd.concat([tmp_df, end_series], axis=1)
+            df = pd.concat([df, end_series], axis=1)
 
             # Append Filehash:
             ser = append_column(df,filehash)
-            end_series = pd.to_datetime(pd.Series(ser, name="filehash"))
-            df = pd.concat([tmp_df, end_series], axis=1)
+            df = pd.concat([df, pd.Series(ser, name="filehash")], axis=1)
 
 
             rows = len(df.index)

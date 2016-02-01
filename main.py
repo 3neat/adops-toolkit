@@ -100,7 +100,8 @@ def to_sql():
                      "Performance",
                      "Geo Report",
                      "Browser Report",
-                     "Conversions"],
+                     "Conversions",
+                     "Ad Group Recency"],
                     ["sites",
                      "site_lists",
                      "data_elements",
@@ -108,7 +109,8 @@ def to_sql():
                      "performance",
                      "geography",
                      "browsers",
-                     "conversions"])
+                     "conversions",
+                     "adgroup_recency"])
 
     engine = settings["db_engine"]
 

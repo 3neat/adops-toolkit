@@ -19,6 +19,7 @@ class Processed(Base):
     row_count = Column(Integer)
     date_processed = Column(DateTime)
     report_type = Column(String)
+    advertiser_name = Column(String)
     report_start_date = Column(DateTime)
     report_end_date = Column(DateTime)
 
@@ -48,6 +49,7 @@ def importer(engine, reports, reporttype, tablename):
             df = pd.DataFrame()
             df = report.to_df(rename_cols=True)
             #print "Working on: %s" % report.filename
+
             # Append Report Start Date:
             ser = append_column(df,report.start_date)
             start_series = pd.to_datetime(pd.Series(ser, name="report_start_date"))
@@ -58,28 +60,28 @@ def importer(engine, reports, reporttype, tablename):
             end_series = pd.to_datetime(pd.Series(ser, name="report_end_date"))
             df = pd.concat([tmp_df, end_series], axis=1)
 
+            # Append Filehash:
+            ser = append_column(df,filehash)
+            end_series = pd.to_datetime(pd.Series(ser, name="filehash"))
+            df = pd.concat([tmp_df, end_series], axis=1)
+
 
             rows = len(df.index)
             date_processed = datetime.datetime.now()
 
-            # TODO: Need to implement dtype for all report types, using quick hack to get conversions up
-            if report.report_type == 'Conversions':
-                try:
-                    df.to_sql(tablename, engine, if_exists='append', dtype=report.dtype, index=False)
-                    print "Inserting %s rows for file: %s" % (rows, report.filename)
-                except:
-                    print "*** ERROR importing: %s" % report.filename
-            else:
-                try:
-                    df.to_sql(tablename, engine, if_exists='append', index=False)
-                    print "Inserting %s rows for file: %s" % (rows, report.filename)
-                except:
-                    print "*** ERROR importing: %s" % report.filename
+            # DataFrame to SQL
+            df.to_sql(tablename, engine, if_exists='append', dtype=report.dtype, index=False)
+            print "Inserting %s rows for file: %s" % (rows, report.filename)
+            # try:
+            #     df.to_sql(tablename, engine, if_exists='append', dtype=report.dtype, index=False)
+            #     print "Inserting %s rows for file: %s" % (rows, report.filename)
+            # except:
+            #     print "*** ERROR importing: %s" % report.filename
 
 
             process_transaction = Processed(filehash=filehash, filename=report.filename, row_count=rows,
                                             date_processed=date_processed, report_type=report.report_type,
-                                            report_start_date=report.start_date,
+                                            advertiser_name=report.advertiser, report_start_date=report.start_date,
                                             report_end_date=report.end_date)
             session.add(process_transaction)
             session.commit()

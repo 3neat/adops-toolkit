@@ -90,7 +90,6 @@ def add_metrics(df):
     df.drop('creative_was_viewable', axis=1, inplace=True)
     return df
 
-
 def rules_filter(df, rules):
     t = pd.DataFrame()
     for rule in rules:
@@ -104,31 +103,38 @@ def format_excel(df, filename, sheetname="1"):
     # TODO: Place a file extension check to ensure one .xlsx
 
     # TODO: Sort DataFrame by 'cost' DESC
-    df.sort('cost')
+    df = df.sort('cost', ascending=False)
+    df.reset_index(level=0, inplace=True)
 
     filename = ''.join([filename, ".xlsx"])
     writer = pd.ExcelWriter(filename, engine='xlsxwriter')
-    df.to_excel(writer, sheet_name=sheetname)
+    df.to_excel(writer, sheet_name=sheetname, index=False)
 
     workbook = writer.book
     worksheet = writer.sheets[sheetname]
 
-    currency = workbook.add_format({'num_format': '$#,###.##'})
-    percentage = workbook.add_format({'num_format': '0.00%'})
+    currency = workbook.add_format({'num_format': 44})
+    percentage_long = workbook.add_format({'num_format': '0.00%'})
+    percentage_short = workbook.add_format({'num_format': '0%'})
 
     worksheet.set_column('A:A', 55)
-    worksheet.set_column('Q:Q', None, currency)
+    worksheet.set_column('G:G', None, currency)
+    worksheet.set_column('H:H', None, currency)
+    worksheet.set_column('S:S', None, currency)
     worksheet.set_column('T:T', None, currency)
-    worksheet.set_column('V:V', None, currency)
-    worksheet.set_column('W:W', None, currency)
-    worksheet.set_column('X:X', None, currency)
+    worksheet.set_column('U:U', None, currency)
 
-    worksheet.set_column('R:R', None, percentage)
-    worksheet.set_column('S:S', None, percentage)
-    worksheet.set_column('Y:Y', None, percentage)
+    worksheet.set_column('D:D', None, percentage_short)
+    worksheet.set_column('F:F', None, percentage_long)
+    worksheet.set_column('V:V', None, percentage_short)
+
 
     writer.save()
 
+def remove_excess_columns(df, group_by):
+    df = df[["bids","impressions","win_rate","clicks","ctr","avg_bid","cost","ctc_1","vtc_1","ctc_2","vtc_2",
+            "ctc_3","vtc_3","ctc_4","vtc_4","ctc_5","vtc_5","ecpc","ecpm","ecpa","moat"]]
+    return df
 
 def create_report(folder, reports, view, group_by):
     # Filter out the needed report files for analysis
@@ -145,7 +151,7 @@ def create_report(folder, reports, view, group_by):
     df = df[[x for x in columns]].aggregate(np.sum)
 
     df = add_metrics(df)
-
+    df = remove_excess_columns(df, view["group_by"])
 
     if view['rules']:
         df = rules_filter(df, view['rules'])

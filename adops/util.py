@@ -38,9 +38,9 @@ def get_report_type(filename):
 def adgroup_filter(df, adgroups):
     # isinstance() let's us take in either a string or a list
     if isinstance(adgroups, basestring):
-        df = df[df['ad_group_id'].isin([adgroups])]
+        df = df[df['adgroup_id'].isin([adgroups])]
     else:
-        df = df[df['ad_group_id'].isin(adgroups)]
+        df = df[df['adgroup_id'].isin(adgroups)]
     return df
 
 
